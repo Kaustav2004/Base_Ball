@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-// import { MainPageComponent } from "./mymyComponents/main-page/main-page.component";
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { environment } from '../../enviourment';
 import { NavbarComponent } from './myComponents/navbar/navbar.component';
+import { ToastrModule } from 'ngx-toastr';
+import { ToastComponent } from "../../toast.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, ToastrModule, ToastComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
   connectionStatus: string = '';
 
   ngOnInit(): void {
@@ -27,8 +25,6 @@ export class AppComponent implements OnInit {
   checkFirestoreConnection(): void {
     const app = initializeApp(environment.firebase);
     const db = getFirestore(app);
-    console.log('Starting Firestore connection...');
-    // Try to fetch data from Firestore
     console.log('Starting Firestore connection...');
 
     getDocs(collection(db, 'imageOrders'))

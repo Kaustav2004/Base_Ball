@@ -13,3 +13,13 @@ section {
     display: table-cell;
     max-width: 600px;
   }
+  /* This will target the mat-spinner circle and make it white */
+.mat-spinner circle {
+  stroke: white !important;
+}
+
+/* To ensure the spinner's fill is also white */
+.mat-spinner circle, .mat-spinner path {
+  fill: white !important;
+  stroke: white !important;
+}

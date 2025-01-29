@@ -1,22 +1,34 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { environment } from '../enviourment';
-import { routes } from './app/app.routes'; 
 import { RouterModule } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
+import { environment } from '../enviourment';
+import { routes } from './app/app.routes';
+import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
-
-  
-  bootstrapApplication(AppComponent, {
-    providers: [
-      importProvidersFrom(RouterModule.forRoot(routes)),
-      provideFirebaseApp(() => initializeApp(environment.firebase)),
-      provideAuth(() => getAuth()),
-    ],
-  });
-  
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideAnimations(),
+    provideToastr(),
+    importProvidersFrom(
+      RouterModule.forRoot(routes),
+      BrowserAnimationsModule, // Import BrowserAnimationsModule here
+      ToastrModule.forRoot({
+        timeOut: 3000,
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        progressBar: true,
+        progressAnimation: 'decreasing', // Smooth decreasing progress bar
+        easeTime: 300, // Animation transition time
+      }),       
+    ),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+  ],
+}).catch((err) => console.error(err));

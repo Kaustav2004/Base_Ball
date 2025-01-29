@@ -1,25 +1,145 @@
-import { Component } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
-
-/**
- * @title Basic buttons
- */
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../../toast.service';
 @Component({
-  selector: 'button-overview-example',
+  selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  imports: [MatButtonModule, MatDividerModule, MatIconModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
 })
-// export class ButtonOverviewExample {}
 
-// @Component({
-//   selector: 'app-signup',
-//   imports: [],
-//   templateUrl: './signup.component.html',
-//   styleUrl: './signup.component.css'
-// })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
+  currentForm: 'login' | 'signup' = 'login';
+  showSpinner = false;
 
+  // Form data
+  loginData = {
+    email: '',
+    password: ''
+  };
+
+  signupData = {
+    name: '',
+    email: '',
+    password: ''
+  };
+
+  constructor(private router: Router , private toastr: ToastrService,private toastService: ToastService) {}
+
+  ngOnInit(): void {
+    const video = document.getElementById('backgroundVideo') as HTMLVideoElement;
+    if (video) {
+      video.muted = true;
+      video.play().catch((error) => {
+        console.error('Error playing the video:', error);
+      });
+    }
+  }
+
+  // Display a success toast
+   showSuccess(message: string, title: string = 'success'): void {
+    this.toastr.success(message, title, {
+      timeOut: 3000,
+      positionClass: 'toast-top-center',
+      progressBar: true,
+      closeButton: true,
+    });
+  }
+
+  // Display an error toast
+   showError(message: string, title: string = 'error'): void {
+    this.toastr.error(message, title, {
+      timeOut: 3000,
+      positionClass: 'toast-top-center',
+      progressBar: true,
+      closeButton: true,
+    });
+  }
+
+  // Switch between login and signup forms
+  showForm(formType: 'login' | 'signup'): void {
+    this.currentForm = formType;
+  }
+
+  // Handle login
+  async onLogin(): Promise<void> {
+    if (!this.loginData.email || !this.loginData.password) {
+      this.toastService.showToast('error', 'All fields are required', 'Error');
+      // this.showError('Email and password are required.');
+      return;
+    }
+
+    this.showSpinner = true;
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/logIn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.loginData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        this.toastService.showToast('success', 'LogIn successful!', 'Success');
+        // this.showSuccess('Login successful!');
+        localStorage.setItem('token', data.token);
+        this.router.navigate(['/']);
+      } else {
+        this.toastService.showToast('error', 'LogIn Failed!', 'Error');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      this.toastService.showToast('error', 'LogIn Failed!', 'Error');
+      // this.showError('An error occurred during login. Please try again.');
+    } finally {
+      this.showSpinner = false;
+      this.loginData.email = '';
+      this.loginData.password = '';
+    }
+  }
+
+  // Handle signup
+  async onSignup(): Promise<void> {
+    if (!this.signupData.name || !this.signupData.email || !this.signupData.password) {
+      this.toastService.showToast('error', 'All fields are required', 'Error');
+      // this.showError('All fields are required.');
+      return;
+    }
+
+    this.showSpinner = true;
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/signUp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.signupData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        this.toastService.showToast('success', 'Signup successful!', 'Success');
+        // this.showSuccess('Signup successful!');
+        this.showForm('login');
+      } else {
+        this.toastService.showToast('error', 'Signup failed!', 'Error');
+        // this.showError(data.message || 'Signup failed.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      // this.showError('An error occurred during signup. Please try again.');
+      this.toastService.showToast('error', 'Signup failed!', 'Error');
+    } finally {
+      this.showSpinner = false;
+      this.signupData.name = '';
+      this.signupData.email = '';
+      this.signupData.password = '';
+    }
+  }
 }
