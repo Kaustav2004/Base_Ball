@@ -23,8 +23,8 @@ app.use("/api/v1",allRoutes);
 
 app.use("/",(req, res) => {
   res.status(404).json({
-    success: false,
-    message: 'Page not found'
+    success: true,
+    message: 'Home Page'
   });
 });
 // Start the server
