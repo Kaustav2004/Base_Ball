@@ -1,0 +1,9 @@
+[build]
+  base = "frontend"  # This should point to the 'frontend' directory
+  command = "npm run build"
+  publish = "dist/frontend"  # Ensure this is correct
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
