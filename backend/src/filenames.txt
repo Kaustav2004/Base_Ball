@@ -1,0 +1,9 @@
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Controllers
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Models
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Routes
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\filenames.txt
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\index.ts
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Controllers\Auth.ts
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Controllers\UserInfo.ts
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Models\User.ts
+C:\MY FILES\Diptesh\Code\PitchPlay\FINAL\Base_Ball\backend\src\Routes\allRoutes.ts

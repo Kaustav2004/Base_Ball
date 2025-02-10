@@ -2,3 +2,5 @@
 backend/src/firebase-adminsdk.json
 
 dist/firebase-adminsdk.json
+
+.env
